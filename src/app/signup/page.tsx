@@ -1,6 +1,7 @@
 
 'use client';
 
+import { useEffect } from 'react';
 import { useCreateUserWithEmailAndPassword, useSignInWithGoogle } from 'react-firebase-hooks/auth';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
@@ -29,13 +30,15 @@ export default function SignupPage() {
     }
   };
 
-  if (error || googleError) {
-    toast({
-      variant: "destructive",
-      title: "Authentication Error",
-      description: error?.message || googleError?.message,
-    })
-  }
+  useEffect(() => {
+    if (error || googleError) {
+      toast({
+        variant: "destructive",
+        title: "Authentication Error",
+        description: error?.message || googleError?.message,
+      })
+    }
+  }, [error, googleError, toast]);
 
   return (
     <div className="flex min-h-screen flex-col justify-center items-center bg-background px-4">
