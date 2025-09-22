@@ -1,9 +1,18 @@
 
+'use client';
+
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Rocket } from 'lucide-react';
 
 export default function HomePage() {
+  const [year, setYear] = useState(new Date().getFullYear());
+
+  useEffect(() => {
+    setYear(new Date().getFullYear());
+  }, []);
+
   return (
     <div className="flex flex-col min-h-screen bg-background">
       <header className="container mx-auto px-4 md:px-6 h-20 flex items-center justify-between">
@@ -46,7 +55,7 @@ export default function HomePage() {
 
       <footer className="container mx-auto px-4 md:px-6 h-20 flex items-center justify-center">
         <p className="text-sm text-muted-foreground">
-          © {new Date().getFullYear()} StudyWise AI. All rights reserved.
+          © {year} StudyWise AI. All rights reserved.
         </p>
       </footer>
     </div>

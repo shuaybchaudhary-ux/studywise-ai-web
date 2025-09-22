@@ -34,9 +34,14 @@ export default function ChatLayout() {
     },
   });
 
+  const generateId = () => {
+    // This function will only be called on the client
+    return crypto.randomUUID();
+  };
+
   const onSubmit = async (data: z.infer<typeof chatSchema>) => {
     const userMessage: ChatMessage = {
-      id: crypto.randomUUID(),
+      id: generateId(),
       role: 'user',
       content: data.message,
     };
@@ -47,7 +52,7 @@ export default function ChatLayout() {
     const result = await getAnswer(data.message, `Respond in a ${tone} tone.`);
     
     const aiMessage: ChatMessage = {
-      id: crypto.randomUUID(),
+      id: generateId(),
       role: 'assistant',
       content: result.answer,
     };
