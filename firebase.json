@@ -1,8 +1,13 @@
 {
-  "apphosting": {
-    "backends": [
-      "studywise-ai"
+  "hosting": {
+    "source": ".",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
     ],
-    "source": "."
+    "frameworksBackend": {
+      "region": "us-central1"
+    }
   }
 }
