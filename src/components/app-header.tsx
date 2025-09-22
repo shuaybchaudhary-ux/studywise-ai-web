@@ -1,3 +1,4 @@
+
 'use client';
 
 import * as React from 'react';
@@ -16,9 +17,19 @@ import { SidebarTrigger } from '@/components/ui/sidebar';
 import { Crown, LogOut, Settings, Rocket } from 'lucide-react';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import Link from 'next/link';
+import { auth } from '@/lib/firebase';
+import { useSignOut } from 'react-firebase-hooks/auth';
+import { useRouter } from 'next/navigation';
 
 export default function AppHeader() {
   const userAvatar = PlaceHolderImages.find((img) => img.id === 'user-avatar');
+  const [signOut] = useSignOut(auth);
+  const router = useRouter();
+
+  const handleSignOut = async () => {
+    await signOut();
+    router.push('/login');
+  };
 
   return (
     <header className="sticky top-0 z-10 flex h-16 items-center gap-4 border-b bg-background/80 backdrop-blur-sm px-4 md:px-6">
@@ -59,7 +70,7 @@ export default function AppHeader() {
               <span>Upgrade to Pro</span>
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
+            <DropdownMenuItem onClick={handleSignOut}>
               <LogOut className="mr-2 h-4 w-4" />
               <span>Logout</span>
             </DropdownMenuItem>

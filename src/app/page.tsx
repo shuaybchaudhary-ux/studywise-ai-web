@@ -12,10 +12,10 @@ export default function HomePage() {
         </Link>
         <nav className="hidden md:flex items-center gap-4">
           <Button variant="ghost" asChild>
-            <Link href="/chat">Login</Link>
+            <Link href="/login">Login</Link>
           </Button>
           <Button asChild>
-            <Link href="/chat">Sign Up</Link>
+            <Link href="/signup">Sign Up</Link>
           </Button>
         </nav>
         <div className="md:hidden">
@@ -36,7 +36,7 @@ export default function HomePage() {
         </p>
         <div className="flex flex-col sm:flex-row gap-4">
           <Button size="lg" asChild>
-            <Link href="/chat">Get Started</Link>
+            <Link href="/signup">Get Started</Link>
           </Button>
           <Button size="lg" variant="outline" asChild>
             <Link href="/chat">Try the Chatbot</Link>
