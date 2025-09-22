@@ -12,7 +12,6 @@ import {
   SidebarFooter,
   SidebarGroup,
 } from '@/components/ui/sidebar';
-import { Button } from '@/components/ui/button';
 import {
   Bot,
   FileQuestion,
@@ -46,7 +45,7 @@ export default function AppSidebar() {
       <SidebarMenu className="flex-1">
         {menuItems.map(({ href, label, icon: Icon }) => (
           <SidebarMenuItem key={href}>
-            <Link href={href} legacyBehavior passHref>
+            <Link href={href}>
               <SidebarMenuButton
                 isActive={pathname === href}
                 tooltip={{ children: label }}
@@ -61,7 +60,7 @@ export default function AppSidebar() {
       <SidebarFooter>
         <SidebarGroup>
           <SidebarMenuItem>
-            <Link href="#" legacyBehavior passHref>
+            <Link href="#">
               <SidebarMenuButton>
                 <Crown />
                 <span>Upgrade to Pro</span>
@@ -69,7 +68,7 @@ export default function AppSidebar() {
             </Link>
           </SidebarMenuItem>
           <SidebarMenuItem>
-            <Link href="/settings" legacyBehavior passHref>
+            <Link href="/settings">
               <SidebarMenuButton isActive={pathname === '/settings'}>
                 <Settings />
                 <span>Settings</span>
