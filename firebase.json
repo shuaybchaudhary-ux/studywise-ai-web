@@ -1,0 +1,8 @@
+{
+  "apphosting": {
+    "backends": [
+      "studywise-ai"
+    ],
+    "source": "."
+  }
+}
