@@ -13,8 +13,7 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { SidebarTrigger } from '@/components/ui/sidebar';
-import { Crown, LogOut, Settings } from 'lucide-react';
-import { Logo } from './icons';
+import { Crown, LogOut, Settings, Rocket } from 'lucide-react';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import Link from 'next/link';
 
@@ -25,8 +24,10 @@ export default function AppHeader() {
     <header className="sticky top-0 z-10 flex h-16 items-center gap-4 border-b bg-background/80 backdrop-blur-sm px-4 md:px-6">
       <SidebarTrigger className="md:hidden" />
       <div className="flex items-center gap-2">
-        <Logo className="h-6 w-6 text-primary" />
-        <h1 className="text-lg font-semibold font-headline">StudyWise AI</h1>
+        <Link href="/" className="flex items-center gap-2">
+            <Rocket className="h-6 w-6 text-primary" />
+            <h1 className="text-lg font-semibold font-headline text-primary">StudyWise AI</h1>
+        </Link>
       </div>
       <div className="ml-auto flex items-center gap-4">
         <DropdownMenu>

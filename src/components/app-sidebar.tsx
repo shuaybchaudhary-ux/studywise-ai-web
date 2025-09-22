@@ -21,8 +21,8 @@ import {
   Settings,
   BookOpenCheck,
   Crown,
+  Rocket
 } from 'lucide-react';
-import { Logo } from './icons';
 
 const menuItems = [
   { href: '/chat', label: 'Chat', icon: Bot },
@@ -39,15 +39,17 @@ export default function AppSidebar() {
   return (
     <Sidebar>
       <SidebarHeader className="hidden md:flex items-center gap-2">
-        <Logo className="w-6 h-6 text-primary" />
-        <h1 className="text-lg font-semibold font-headline">StudyWise AI</h1>
+        <Link href="/" className='flex items-center gap-2'>
+          <Rocket className="w-6 h-6 text-primary" />
+          <h1 className="text-lg font-semibold font-headline text-primary">StudyWise AI</h1>
+        </Link>
       </SidebarHeader>
       <SidebarMenu className="flex-1">
         {menuItems.map(({ href, label, icon: Icon }) => (
           <SidebarMenuItem key={href}>
             <Link href={href}>
               <SidebarMenuButton
-                isActive={pathname === href}
+                isActive={pathname.startsWith(href)}
                 tooltip={{ children: label }}
               >
                 <Icon />
