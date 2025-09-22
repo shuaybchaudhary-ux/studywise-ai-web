@@ -3,8 +3,9 @@ import './globals.css';
 import { Toaster } from '@/components/ui/toaster';
 
 export const metadata: Metadata = {
-  title: 'StudyWise AI',
-  description: 'Your personal AI-powered study partner.',
+  title: 'StudyWise AI - Your Personal AI Study Partner',
+  description: 'Your personal AI-powered study partner. Get help with practice questions, summaries, diagrams, and personalized study plans.',
+  keywords: ['AI study tool', 'education', 'learning assistant', 'StudyWise AI', 'AI tutor'],
 };
 
 export default function RootLayout({

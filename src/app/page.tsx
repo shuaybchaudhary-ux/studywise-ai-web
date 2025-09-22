@@ -5,6 +5,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Rocket } from 'lucide-react';
+import Head from 'next/head';
 
 export default function HomePage() {
   const [year, setYear] = useState(new Date().getFullYear());
@@ -14,6 +15,12 @@ export default function HomePage() {
   }, []);
 
   return (
+    <>
+    <Head>
+        <title>StudyWise AI - Your Personal AI Study Partner</title>
+        <meta name="description" content="An AI-powered study companion to help you with summaries, practice questions, diagrams, and personalized study plans." />
+        <meta name="keywords" content="AI study tool, education, learning assistant, StudyWise AI, AI tutor" />
+    </Head>
     <div className="flex flex-col min-h-screen bg-background">
       <header className="container mx-auto px-4 md:px-6 h-20 flex items-center justify-between">
         <Link href="/" className="flex items-center gap-2">
@@ -59,5 +66,6 @@ export default function HomePage() {
         </p>
       </footer>
     </div>
+    </>
   );
 }
