@@ -34,7 +34,11 @@ const prompt = ai.definePrompt({
 
   Topic: {{{topic}}}
 
-  Ensure the generated code is valid Mermaid.js code and includes a title.
+  Ensure the generated code is valid Mermaid.js code.
+  The diagram should start with a title, for example:
+  ---
+  title: Your Diagram Title
+  ---
   Do not include any explanation, just the mermaid code.
   `,
 });
