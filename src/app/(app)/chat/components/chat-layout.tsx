@@ -1,0 +1,143 @@
+'use client';
+
+import React, { useState, useRef, useEffect } from 'react';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
+import { Bot, Send, User } from 'lucide-react';
+
+import { Form, FormControl, FormField, FormItem } from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Card } from '@/components/ui/card';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { getAnswer } from '../actions';
+import type { ChatMessage } from '@/lib/types';
+import { useSettings } from '@/contexts/settings-context';
+import { Skeleton } from '@/components/ui/skeleton';
+
+const chatSchema = z.object({
+  message: z.string().min(1, 'Message is required'),
+});
+
+export default function ChatLayout() {
+  const { tone } = useSettings();
+  const [messages, setMessages] = useState<ChatMessage[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const scrollAreaRef = useRef<HTMLDivElement>(null);
+
+  const form = useForm<z.infer<typeof chatSchema>>({
+    resolver: zodResolver(chatSchema),
+    defaultValues: {
+      message: '',
+    },
+  });
+
+  const onSubmit = async (data: z.infer<typeof chatSchema>) => {
+    const userMessage: ChatMessage = {
+      id: crypto.randomUUID(),
+      role: 'user',
+      content: data.message,
+    };
+    setMessages((prev) => [...prev, userMessage]);
+    setIsLoading(true);
+    form.reset();
+
+    const result = await getAnswer(data.message, `Respond in a ${tone} tone.`);
+    
+    const aiMessage: ChatMessage = {
+      id: crypto.randomUUID(),
+      role: 'assistant',
+      content: result.answer,
+    };
+    setMessages((prev) => [...prev, aiMessage]);
+    setIsLoading(false);
+  };
+
+  useEffect(() => {
+    if (scrollAreaRef.current) {
+      scrollAreaRef.current.scrollTo({
+        top: scrollAreaRef.current.scrollHeight,
+        behavior: 'smooth',
+      });
+    }
+  }, [messages, isLoading]);
+
+  return (
+    <div className="flex flex-col h-full">
+      <ScrollArea className="flex-1 p-4" ref={scrollAreaRef}>
+        <div className="space-y-6">
+          {messages.map((message) => (
+            <div
+              key={message.id}
+              className={`flex items-start gap-4 ${
+                message.role === 'user' ? 'justify-end' : ''
+              }`}
+            >
+              {message.role === 'assistant' && (
+                <Avatar className="w-8 h-8 border">
+                  <AvatarFallback><Bot size={20} className="text-primary" /></AvatarFallback>
+                </Avatar>
+              )}
+              <Card
+                className={`max-w-xl p-3 shadow-sm ${
+                  message.role === 'user'
+                    ? 'bg-primary text-primary-foreground'
+                    : 'bg-card'
+                }`}
+              >
+                <p className="text-sm whitespace-pre-wrap">{message.content}</p>
+              </Card>
+              {message.role === 'user' && (
+                <Avatar className="w-8 h-8 border">
+                  <AvatarFallback><User size={20} /></AvatarFallback>
+                </Avatar>
+              )}
+            </div>
+          ))}
+          {isLoading && (
+             <div className="flex items-start gap-4">
+                <Avatar className="w-8 h-8 border">
+                  <AvatarFallback><Bot size={20} className="text-primary" /></AvatarFallback>
+                </Avatar>
+                <Card className="max-w-xl p-3 shadow-sm bg-card">
+                  <div className="space-y-2">
+                    <Skeleton className="h-4 w-[250px]" />
+                    <Skeleton className="h-4 w-[200px]" />
+                  </div>
+                </Card>
+            </div>
+          )}
+        </div>
+      </ScrollArea>
+      <div className="p-4 bg-background border-t">
+        <Form {...form}>
+          <form
+            onSubmit={form.handleSubmit(onSubmit)}
+            className="flex items-center gap-2"
+          >
+            <FormField
+              control={form.control}
+              name="message"
+              render={({ field }) => (
+                <FormItem className="flex-1">
+                  <FormControl>
+                    <Input
+                      placeholder="Ask me anything about your studies..."
+                      {...field}
+                      disabled={isLoading}
+                    />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+            <Button type="submit" size="icon" disabled={isLoading}>
+              <Send className="h-4 w-4" />
+            </Button>
+          </form>
+        </Form>
+      </div>
+    </div>
+  );
+}
