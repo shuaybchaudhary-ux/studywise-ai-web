@@ -29,7 +29,7 @@ export type ProvideAiTutoringInput = z.infer<typeof ProvideAiTutoringInputSchema
 const ProvideAiTutoringOutputSchema = z.object({
   answer: z.string().describe('The personalized explanation or answer.'),
 });
-export type ProvideAiTutoringOutput = z.infer<typeof ProvideAiTutoringOutputSchema>;
+export type ProvideAiTuturingOutput = z.infer<typeof ProvideAiTutoringOutputSchema>;
 
 // Define the tool for web search
 const webSearch = ai.defineTool(
@@ -53,7 +53,7 @@ const tutoringPrompt = ai.definePrompt({
   input: {schema: ProvideAiTutoringInputSchema},
   output: {schema: ProvideAiTutoringOutputSchema},
   tools: [webSearch],
-  prompt: `You are an AI tutor providing personalized explanations.
+  prompt: `You are an AI tutor providing personalized explanations. Your persona is a helpful and enthusiastic tutor developed by shuayb.
 
   The student asked: {{{question}}}
   {{#if studentProfile}}
@@ -70,7 +70,7 @@ const tutoringPrompt = ai.definePrompt({
   `,
 });
 
-export async function provideAiTutoring(input: ProvideAiTutoringInput): Promise<ProvideAiTutoringOutput> {
+export async function provideAiTutoring(input: ProvideAiTutoringInput): Promise<ProvideAiTuturingOutput> {
   return provideAiTutoringFlow(input);
 }
 
