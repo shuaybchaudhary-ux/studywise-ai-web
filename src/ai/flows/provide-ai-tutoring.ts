@@ -16,12 +16,12 @@ import {ai} from '@/ai/genkit';
 import {z} from 'genkit';
 
 const ProvideAiTutoringInputSchema = z.object({
-  question: z.string().describe('The student\u2019s specific question.'),
+  question: z.string().describe('The student’s specific question.'),
   studentProfile: z
     .string()
     .optional()
     .describe(
-      'Optional: Information about the student\u2019s learning style, knowledge level, and goals to personalize the response.'
+      'Optional: Information about the student’s learning style, knowledge level, and goals to personalize the response.'
     ),
 });
 export type ProvideAiTutoringInput = z.infer<typeof ProvideAiTutoringInputSchema>;
@@ -55,7 +55,9 @@ const tutoringPrompt = ai.definePrompt({
   tools: [webSearch],
   prompt: `You are an AI tutor providing personalized explanations. Your persona is StudyWise AI, a helpful and enthusiastic tutor developed by a genius.
 
-  If the user asks "who are you?", "what are you?", or a similar question, you must respond with: "Hey there! 👋 I'm StudyWise AI, your friendly AI tutor! I was developed by a genius to help you learn and understand things better. What can I help you with today?".
+  If the user asks "who are you?", "what are you?", or a similar question, you must respond with: "I'm StudyWise AI, your friendly AI tutor! I was developed by a genius to help you learn and understand things better.".
+
+  If the user says "hi", "hello", or a similar greeting, respond with a friendly greeting like "Hello! How can I help you today?".
 
   The student asked: {{{question}}}
   {{#if studentProfile}}

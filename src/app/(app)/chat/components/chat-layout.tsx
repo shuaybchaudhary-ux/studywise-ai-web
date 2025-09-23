@@ -21,9 +21,16 @@ const chatSchema = z.object({
   message: z.string().min(1, 'Message is required'),
 });
 
+const initialMessage: ChatMessage = {
+  id: 'initial-message',
+  role: 'assistant',
+  content: "Hey there! 👋 I'm StudyWise AI. What can I help you with today?",
+};
+
+
 export default function ChatLayout() {
   const { tone } = useSettings();
-  const [messages, setMessages] = useState<ChatMessage[]>([]);
+  const [messages, setMessages] = useState<ChatMessage[]>([initialMessage]);
   const [isLoading, setIsLoading] = useState(false);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
 
