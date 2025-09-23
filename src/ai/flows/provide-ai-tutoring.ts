@@ -62,14 +62,14 @@ ${studentProfile ? `Here's some information about the student: ${studentProfile}
 Make sure to provide a response that is appropriate for a student. Do not write a response as if you're talking to another expert.
 `;
 
-    const { text } = await ai.generate({
+    const response = await ai.generate({
       model: 'googleai/gemini-1.5-flash',
       system: systemPrompt,
       history: history || [],
       prompt: question,
     });
 
-    return { answer: text };
+    return { answer: response.text };
   }
 );
 
