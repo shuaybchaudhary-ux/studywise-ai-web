@@ -62,14 +62,11 @@ ${studentProfile ? `Here's some information about the student: ${studentProfile}
 Make sure to provide a response that is appropriate for a student. Do not write a response as if you're talking to another expert.
 `;
 
-    // The user's latest question should not be in the history, but as the final prompt message.
-    const latestUserMessage = { role: 'user' as const, parts: [{ text: question }] };
-
     const { text } = await ai.generate({
-      model: 'googleai/gemini-1.5-pro',
+      model: 'googleai/gemini-1.5-flash',
       system: systemPrompt,
       history: history || [],
-      prompt: latestUserMessage.parts.map(p => p.text).join('\n'), // Pass latest question here
+      prompt: question,
     });
 
     return { answer: text };
@@ -78,14 +75,5 @@ Make sure to provide a response that is appropriate for a student. Do not write 
 
 
 export async function provideAiTutoring(input: ProvideAiTutoringInput): Promise<ProvideAiTutoringOutput> {
-  // Ensure the flow is called with the correct input structure.
-  // The 'history' should not contain the most recent question, which is passed separately.
-  const historyWithoutLast = input.history ? input.history.slice(0, -1) : [];
-
-  const flowInput: ProvideAiTutoringInput = {
-    ...input,
-    history: historyWithoutLast,
-  };
-
-  return provideAiTutoringFlow(flowInput);
+  return provideAiTutoringFlow(input);
 }
