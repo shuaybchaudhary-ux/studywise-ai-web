@@ -24,7 +24,7 @@ const chatSchema = z.object({
 const initialMessage: ChatMessage = {
   id: 'initial-message',
   role: 'assistant',
-  content: "Hey there! 👋 I'm StudyWise AI. What can I help you with today?",
+  content: "Hello! I'm StudyWise AI. How can I help you today?",
 };
 
 
@@ -52,11 +52,15 @@ export default function ChatLayout() {
       role: 'user',
       content: data.message,
     };
-    setMessages((prev) => [...prev, userMessage]);
+    
+    const newMessages = [...messages, userMessage];
+    setMessages(newMessages);
     setIsLoading(true);
     form.reset();
 
-    const result = await getAnswer(data.message, `Respond in a ${tone} tone.`);
+    const history = newMessages.slice(0, -1).map(({ id, ...rest }) => rest);
+
+    const result = await getAnswer(data.message, `Respond in a ${tone} tone.`, history);
     
     const aiMessage: ChatMessage = {
       id: generateId(),

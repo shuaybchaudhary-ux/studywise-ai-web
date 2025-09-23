@@ -15,6 +15,11 @@
 import {ai} from '@/ai/genkit';
 import {z} from 'genkit';
 
+const ChatMessageSchema = z.object({
+  role: z.enum(['user', 'assistant']),
+  content: z.string(),
+});
+
 const ProvideAiTutoringInputSchema = z.object({
   question: z.string().describe('The student’s specific question.'),
   studentProfile: z
@@ -23,6 +28,7 @@ const ProvideAiTutoringInputSchema = z.object({
     .describe(
       'Optional: Information about the student’s learning style, knowledge level, and goals to personalize the response.'
     ),
+  history: z.array(ChatMessageSchema).optional().describe('The conversation history.'),
 });
 export type ProvideAiTutoringInput = z.infer<typeof ProvideAiTutoringInputSchema>;
 
@@ -58,6 +64,17 @@ const tutoringPrompt = ai.definePrompt({
   If the user asks "who are you?", "what are you?", or a similar question, you must respond with: "I'm StudyWise AI, your friendly AI tutor! I was developed by a genius to help you learn and understand things better.".
 
   If the user says "hi", "hello", or a similar greeting, respond with a friendly greeting like "Hello! How can I help you today?".
+
+  {{#if history}}
+  Here is the conversation history:
+  {{#each history}}
+  {{#if (eq role 'user')}}
+  User: {{{content}}}
+  {{else}}
+  Assistant: {{{content}}}
+  {{/if}}
+  {{/each}}
+  {{/if}}
 
   The student asked: {{{question}}}
   {{#if studentProfile}}

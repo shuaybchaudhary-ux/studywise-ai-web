@@ -1,10 +1,11 @@
 'use server';
 
 import { provideAiTutoring } from '@/ai/flows/provide-ai-tutoring';
+import type { ChatMessage } from '@/lib/types';
 
-export async function getAnswer(question: string, studentProfile: string) {
+export async function getAnswer(question: string, studentProfile: string, history: ChatMessage[]) {
   try {
-    const response = await provideAiTutoring({ question, studentProfile });
+    const response = await provideAiTutoring({ question, studentProfile, history });
     return response;
   } catch (error) {
     console.error(error);
