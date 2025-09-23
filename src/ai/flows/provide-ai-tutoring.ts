@@ -14,7 +14,6 @@
 
 import { ai } from '@/ai/genkit';
 import { z } from 'genkit';
-import { generate } from 'genkit';
 
 const ChatPartSchema = z.object({
   text: z.string(),
@@ -66,7 +65,7 @@ Make sure to provide a response that is appropriate for a student. Do not write 
     // The user's latest question should not be in the history, but as the final prompt message.
     const latestUserMessage = { role: 'user' as const, parts: [{ text: question }] };
 
-    const { text } = await generate({
+    const { text } = await ai.generate({
       model: 'googleai/gemini-1.5-pro',
       system: systemPrompt,
       history: history || [],
