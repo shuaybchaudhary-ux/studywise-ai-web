@@ -36,7 +36,6 @@ const prompt = ai.definePrompt({
 
   RULES:
   - Ensure the generated code is valid Mermaid.js code.
-  - The diagram must start with a title, for example: --- title: Your Diagram Title ---
   - CRITICAL: All text for nodes must be enclosed in double quotes. For example: A["This is a node text"]. This is to prevent syntax errors with special characters.
   - Do not include any explanation or markdown formatting, just the raw mermaid code.
   `,
