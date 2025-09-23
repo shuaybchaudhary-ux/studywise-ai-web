@@ -53,12 +53,15 @@ export default function ChatLayout() {
       content: data.message,
     };
     
-    const newMessages = [...messages, userMessage];
-    setMessages(newMessages);
+    // Filter out the initial message before creating the history
+    const conversationMessages = messages.filter(m => m.id !== 'initial-message');
+    const newMessages = [...conversationMessages, userMessage];
+    setMessages([initialMessage, ...newMessages]);
     setIsLoading(true);
     form.reset();
 
-    const history = newMessages.slice(0, -1).map(({ id, ...rest }) => rest);
+    // Now, `newMessages` doesn't have the initial message, so we can map it directly
+    const history = newMessages.map(({ id, ...rest }) => rest);
 
     const result = await getAnswer(data.message, `Respond in a ${tone} tone.`, history);
     
