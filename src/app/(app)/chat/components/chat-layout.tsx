@@ -9,11 +9,11 @@ import { Bot, Send, User } from 'lucide-react';
 import { Form, FormControl, FormField, FormItem } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Card } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { getAnswer } from '../actions';
-import type { ChatMessage } from '@/lib/types';
+import type { ChatMessage, ChatHistory } from '@/lib/types';
 import { useSettings } from '@/contexts/settings-context';
 import { Skeleton } from '@/components/ui/skeleton';
 
@@ -23,7 +23,7 @@ const chatSchema = z.object({
 
 const initialMessage: ChatMessage = {
   id: 'initial-message',
-  role: 'assistant',
+  role: 'model',
   content: "Hello! I'm StudyWise AI. How can I help you today?",
 };
 
@@ -55,22 +55,29 @@ export default function ChatLayout() {
     
     // Filter out the initial message before creating the history
     const conversationMessages = messages.filter(m => m.id !== 'initial-message');
-    const newMessages = [...conversationMessages, userMessage];
+    const newMessages: ChatMessage[] = [...conversationMessages, userMessage];
     setMessages([initialMessage, ...newMessages]);
     setIsLoading(true);
     form.reset();
 
-    // Now, `newMessages` doesn't have the initial message, so we can map it directly
-    const history = newMessages.map(({ id, ...rest }) => rest);
+    // Convert ChatMessage[] to ChatHistory[] for the API
+    const history: ChatHistory = newMessages.map(({ role, content }) => ({
+        role,
+        parts: [{ text: content }],
+    }));
 
     const result = await getAnswer(data.message, `Respond in a ${tone} tone.`, history);
     
     const aiMessage: ChatMessage = {
       id: generateId(),
-      role: 'assistant',
+      role: 'model',
       content: result.answer,
     };
-    setMessages((prev) => [...prev, aiMessage]);
+    setMessages((prev) => {
+        // Find the user message and remove it to replace with the full history
+        const updatedMessages = prev.filter(m => m.id !== userMessage.id);
+        return [...updatedMessages, userMessage, aiMessage];
+    });
     setIsLoading(false);
   };
 
@@ -94,7 +101,7 @@ export default function ChatLayout() {
                 message.role === 'user' ? 'justify-end' : ''
               }`}
             >
-              {message.role === 'assistant' && (
+              {message.role === 'model' && (
                 <Avatar className="w-8 h-8 border">
                   <AvatarFallback><Bot size={20} className="text-primary" /></AvatarFallback>
                 </Avatar>
