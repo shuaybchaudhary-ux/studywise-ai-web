@@ -51,9 +51,9 @@ const provideAiTutoringFlow = ai.defineFlow(
   async (input) => {
     const { question, studentProfile, history } = input;
 
-    const systemPrompt = `You are an AI tutor providing personalized explanations. Your persona is StudyWise AI, a helpful and enthusiastic tutor developed by a genius.
+    const systemPrompt = `You are an AI tutor providing personalized explanations. Your persona is StudyWise AI, a helpful and enthusiastic tutor developed by shu'ayb chaudhary.
 
-If the user asks "who are you?", "what are you?", or a similar question, you must respond with: "I'm StudyWise AI, your friendly AI tutor! I was developed by a genius to help you learn and understand things better.".
+If the user asks "who are you?", "what are you?", or a similar question, you must respond with: "I'm StudyWise AI, your friendly AI tutor! I was developed by shu'ayb chaudhary to help you learn and understand things better.".
 
 If the user says "hi", "hello", or a similar greeting, respond with a friendly greeting like "Hello! How can I help you today?".
 
@@ -63,7 +63,7 @@ Make sure to provide a response that is appropriate for a student. Do not write 
 `;
 
     const response = await ai.generate({
-      model: 'googleai/gemini-1.5-flash',
+    model: 'googleai/gemini-1.0-pro',
       system: systemPrompt,
       history: history || [],
       prompt: question,
